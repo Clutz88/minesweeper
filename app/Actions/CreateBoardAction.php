@@ -1,0 +1,72 @@
+<?php
+
+namespace App\Actions;
+
+use App\Models\Board;
+use App\Models\Cell;
+use App\Models\Row;
+use Illuminate\Support\Collection;
+
+class CreateBoardAction
+{
+    public function __invoke(int $width = 16, int $height = 30, int $mines = 99): Collection
+    {
+        $seed = collect([
+            ...array_fill(0, $mines, 'x'),
+            ...array_fill(0, ($width * $height) - $mines, 0),
+        ])
+            ->shuffle()
+            ->map(function ($cell, $index) use ($width, $height) {
+                return [
+                    'index' => $index,
+                    'x' => $index % $width,
+                    'y' => (int) floor($index / $width),
+                    'value' => $cell,
+                    'is_mine' => $cell === 'x',
+                    'is_flag' => false,
+                    'is_revealed' => false,
+                ];
+            });
+        $seed = $seed->map(function ($cell, $index) use ($width, $height, $seed) {
+                if (! $cell['is_mine']) {
+                    foreach ([$width, 0, -$width] as $offset) {
+                        for($i = -1; $i <= 1; $i++) {
+                            if ($i === -1 && $index % $width === 0) {
+                                continue;
+                            }
+                            if ($i === 1 && $index % $width === $width - 1) {
+                                continue;
+                            }
+                            if ($seed[$index + $offset + $i]['is_mine'] ?? null) {
+                                $cell['value']++;
+                            }
+                        }
+                    }
+                }
+
+                return $cell;
+            });
+
+        $board = collect();
+        for($i = 0; $i < $height; $i++) {
+            $row = collect();
+            $chunk = $seed->shift($width);
+            $chunk->each(function ($cell) use ($row) {
+                   $row->push($cell);
+                });
+            $board->push($row);
+        }
+        return $board;
+//        $board = Board::create();
+//        for($i = 0; $i < $height; $i++) {
+//            $row = $board->rows()->create([
+//                'index' => $i
+//            ]);
+//            $seed->take($width)
+//                ->each(fn ($cell) => $row->cells()->create($cell));
+//        }
+//
+//        return $board;
+    }
+
+}
