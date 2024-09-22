@@ -3,11 +3,15 @@
 import Row from "@/Components/Row.vue";
 import GuestLayout from "@/Layouts/GuestLayout.vue";
 import {init, reveal, flag} from "@/Composables/Minesweeper.js"
-import {onMounted} from "vue";
+import {onMounted, watch, watchEffect} from "vue";
 import Modal from "@/Components/Modal.vue";
 import {Link} from "@inertiajs/vue3";
 
 const props = defineProps(['board']);
+
+watchEffect(() => {
+    init(props.board);
+})
 
 onMounted(() => {
     init(props.board);
