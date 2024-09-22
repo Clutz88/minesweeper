@@ -3,19 +3,22 @@
 namespace App\Actions;
 
 use App\Models\Board;
-use App\Models\Cell;
-use App\Models\Row;
 use Illuminate\Support\Facades\DB;
 
 class UpdateBoardAction
 {
-    public function execute($board_update): void
+    public function execute(Board $board, $board_update): void
     {
-        collect($board_update)
+        $collection = collect($board_update)
             ->filter(fn ($cell) => $cell !== null)
             ->each(fn ($cell) => DB::table("cells")
                 ->where("id", $cell['id'])
                 ->update($cell)
             );
+
+        if ($collection->pluck('is_mine')->unique()->isNotEmpty()) {
+            $board->state = 'over';
+            $board->save();
+        }
     }
 }

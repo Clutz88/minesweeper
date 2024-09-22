@@ -36,6 +36,9 @@ const reveal = (cell, initial = false) => {
     if (initial) {
         sendUpdates();
     }
+    if (cell.is_mine) {
+        board.data.state = 'over';
+    }
     return [];
 }
 

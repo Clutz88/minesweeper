@@ -13,6 +13,7 @@ class BoardResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'state' => $this->state,
             'rows' => RowResource::collection($this->rows),
         ];
     }
