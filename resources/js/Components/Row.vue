@@ -4,18 +4,25 @@ import Cell from "@/Components/Cell.vue";
 
 const props = defineProps(['board', 'row']);
 
-function revealAround(cell, initial = false) {
+function revealAround(cell) {
+    let updates = [];
     for (let x = -1; x <= 1; x++) {
         for (let y = -1; y <= 1; y++) {
             if (cell.y + y > 29) continue;
             if (cell.y + y < 0) continue;
-            reveal(props.board.data.rows[cell.y + y].cells[cell.x + x]);
+
+            updates.push(
+                reveal(
+                    props.board.data.rows[cell.y + y].cells[cell.x + x]
+                )
+            );
         }
     }
+    return updates;
+}
 
-    if (initial) {
-        updateEntireBoard();
-    }
+function sendUpdates(updates) {
+    axios.put(route('board.update', props.board.data), { updates: updates })
 }
 
 const reveal = (cell, initial = false) => {
@@ -26,17 +33,20 @@ const reveal = (cell, initial = false) => {
         cell.is_revealed = true;
 
         if (cell.value === "0") {
-            revealAround(cell);
+            let updates = revealAround(cell);
+            if (initial) {
+                return sendUpdates(updates);
+            }
+            return updates;
         }
     }
 
     if (initial) {
-        updateEntireBoard();
+        sendUpdates([cell])
+    } else {
+        return cell;
     }
-}
-
-const updateEntireBoard = () => {
-    axios.put(route('board.update', props.board.data), {board: props.board.data})
+    return [];
 }
 
 const countFlagsAround = (cell) => {
@@ -60,24 +70,13 @@ const countFlagsAround = (cell) => {
 const flag = (cell) => {
     if (cell.is_revealed ) {
         if (countFlagsAround(cell) == cell.value) {
-            revealAround(cell, true);
+            sendUpdates(revealAround(cell));
         }
         return;
     }
 
     cell.is_flag = !cell.is_flag;
-    axios.put(
-        route('board.update', props.board.data),
-        {
-            "board": {
-                "rows": [
-                    {
-                    "cells": [cell]
-                    }
-                ]
-            }
-        }
-    );
+    sendUpdates([cell])
 };
 </script>
 
