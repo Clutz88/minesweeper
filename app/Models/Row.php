@@ -12,7 +12,7 @@ class Row extends Model
     use HasFactory;
 
     protected $fillable = [
-        'index'
+        'index',
     ];
 
     public function board(): BelongsTo

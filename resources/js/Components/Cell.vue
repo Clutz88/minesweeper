@@ -6,7 +6,7 @@ defineEmits(['reveal', 'flag'])
 
 <template>
     <button
-        class="w-10 h-10 outline outline-1 outline-slate-300 transition-colors duration-150"
+        class="w-8 h-8 outline outline-1 outline-slate-300 transition-colors duration-150"
         :class="{
             'bg-slate-200 hover:bg-slate-50': ! cell.is_revealed,
             'bg-white': cell.is_revealed || cell.is_flag,

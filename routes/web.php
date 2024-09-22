@@ -1,6 +1,5 @@
 <?php
 
-use App\Actions\CreateBoardAction;
 use App\Http\Controllers\BoardController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
@@ -16,8 +15,6 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('board', fn () => inertia('Board', ['board' => app(CreateBoardAction::class)()]))->name('board.create');
-
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
@@ -26,6 +23,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    Route::resource('board', BoardController::class)
+        ->only(['store', 'show']);
 });
 
 require __DIR__.'/auth.php';
