@@ -4,17 +4,21 @@ import Cell from "@/Components/Cell.vue";
 
 const props = defineProps(['board', 'row']);
 
-function revealAround(cell) {
+function revealAround(cell, initial = false) {
     for (let x = -1; x <= 1; x++) {
         for (let y = -1; y <= 1; y++) {
             if (cell.y + y > 29) continue;
             if (cell.y + y < 0) continue;
-            reveal(props.board.rows[cell.y + y].cells[cell.x + x]);
+            reveal(props.board.data.rows[cell.y + y].cells[cell.x + x]);
         }
+    }
+
+    if (initial) {
+        updateEntireBoard();
     }
 }
 
-const reveal = (cell) => {
+const reveal = (cell, initial = false) => {
     if (typeof cell === "undefined") return;
     if (cell.is_flag) return;
 
@@ -25,6 +29,14 @@ const reveal = (cell) => {
             revealAround(cell);
         }
     }
+
+    if (initial) {
+        updateEntireBoard();
+    }
+}
+
+const updateEntireBoard = () => {
+    axios.put(route('board.update', props.board.data), {board: props.board.data})
 }
 
 const countFlagsAround = (cell) => {
@@ -33,7 +45,7 @@ const countFlagsAround = (cell) => {
         for (let y = -1; y <= 1; y++) {
             if (cell.y + y > 29) continue;
             if (cell.y + y < 0) continue;
-            let test_cell = props.board.rows[cell.y + y].cells[cell.x + x];
+            let test_cell = props.board.data.rows[cell.y + y].cells[cell.x + x];
             if (typeof test_cell !== "undefined") {
                 if (test_cell.is_flag) {
                     count++;
@@ -48,18 +60,30 @@ const countFlagsAround = (cell) => {
 const flag = (cell) => {
     if (cell.is_revealed ) {
         if (countFlagsAround(cell) == cell.value) {
-            revealAround(cell);
+            revealAround(cell, true);
         }
         return;
     }
 
     cell.is_flag = !cell.is_flag;
+    axios.put(
+        route('board.update', props.board.data),
+        {
+            "board": {
+                "rows": [
+                    {
+                    "cells": [cell]
+                    }
+                ]
+            }
+        }
+    );
 };
 </script>
 
 <template>
     <div class="flex flex-row">
-        <Cell v-for="cell in row.cells" :key="cell.index" :cell @reveal="reveal(cell)" @flag="flag(cell)" />
+        <Cell v-for="cell in row.cells" :key="cell.index" :cell @reveal="reveal(cell, true)" @flag="flag(cell)" />
     </div>
 </template>
 

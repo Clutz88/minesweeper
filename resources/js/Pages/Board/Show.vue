@@ -9,7 +9,7 @@ defineProps(['board'])
 <template>
     <GuestLayout>
         <div class="board flex flex-col">
-            <Row v-for="row in board.rows" :key="row.id" :row :board />
+            <Row v-for="row in board.data.rows" :key="row.id" :row :board />
         </div>
     </GuestLayout>
 </template>

@@ -13,8 +13,13 @@ class CellResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
+            'index' => $this->index,
+            'is_flag' => $this->is_flag,
+            'is_mine' => $this->is_mine,
+            'is_revealed' => $this->is_revealed,
+            'value' => $this->value,
+            'x' => $this->x,
+            'y' => $this->y,
         ];
     }
 }

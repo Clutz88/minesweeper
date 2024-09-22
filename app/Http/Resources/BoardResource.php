@@ -13,8 +13,7 @@ class BoardResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
+            'rows' => RowResource::collection($this->rows),
         ];
     }
 }
