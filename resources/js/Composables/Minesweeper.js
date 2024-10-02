@@ -15,6 +15,15 @@ const revealAround = (cell) => {
     }
 }
 
+const queueUpdate = (cell) => {
+    updates.push({
+        id: cell.id,
+        is_flag: cell.is_flag,
+        is_revealed: cell.is_revealed,
+        is_mine: cell.is_mine,
+    });
+}
+
 const sendUpdates = () => {
     axios.put(route('board.update', board.data), { updates: updates });
     updates = [];
@@ -31,7 +40,7 @@ const reveal = (cell, initial = false) => {
             revealAround(cell);
         }
     }
-    updates.push(cell);
+    queueUpdate(cell);
 
     if (initial) {
         sendUpdates();
@@ -70,7 +79,7 @@ const flag = (cell) => {
     }
 
     cell.is_flag = !cell.is_flag;
-    updates.push(cell);
+    queueUpdate(cell);
     sendUpdates()
 };
 
