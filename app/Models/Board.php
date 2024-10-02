@@ -11,7 +11,9 @@ class Board extends Model
 {
     use HasFactory;
 
-    protected $guarded = ['id'];
+    protected $fillable = [
+        'state',
+    ];
 
     public function rows(): HasMany
     {
