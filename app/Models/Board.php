@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\BoardState;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -11,9 +12,7 @@ class Board extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'state',
-    ];
+    protected $guarded = ['id'];
 
     public function rows(): HasMany
     {
@@ -23,5 +22,12 @@ class Board extends Model
     public function cells(): HasManyThrough
     {
         return $this->through('rows')->has('cells');
+    }
+
+    protected function casts(): array
+    {
+        return [
+            'state' => BoardState::class,
+        ];
     }
 }

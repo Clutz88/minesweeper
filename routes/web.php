@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\BoardController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ResetBoardController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -26,6 +27,8 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('board', BoardController::class)
         ->only(['store', 'show', 'update']);
+
+    Route::post('board/{board}/reset', ResetBoardController::class)->name('board.reset');
 });
 
 require __DIR__ . '/auth.php';

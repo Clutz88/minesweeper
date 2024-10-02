@@ -2,6 +2,7 @@
 
 namespace App\Actions;
 
+use App\Enums\BoardState;
 use App\Models\Board;
 use App\Models\Cell;
 use App\Models\Row;
@@ -57,7 +58,7 @@ class CreateBoardAction
         }
 
         //        return $board;
-        $board = Board::create();
+        $board = Board::create(['state' => BoardState::Running]);
         $generated_board->each(function ($row, $index) use ($board) {
             $saved_row = Row::make(['index' => $index]);
             $board->rows()->save($saved_row);

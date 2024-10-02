@@ -35,7 +35,10 @@ class BoardController extends Controller
 
     public function update(Request $request, Board $board)
     {
-        app(UpdateBoardAction::class)->execute($board, $request->input('updates'));
+        app(UpdateBoardAction::class)->execute(
+            $board,
+            collect($request->input('updates'))
+        );
     }
 
     public function destroy($id) {}

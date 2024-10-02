@@ -10,10 +10,7 @@ class Cell extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'is_revealed',
-        'is_flag',
-    ];
+    protected $guarded = ['id'];
 
     public function row(): BelongsTo
     {

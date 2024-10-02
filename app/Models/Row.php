@@ -11,9 +11,7 @@ class Row extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'index',
-    ];
+    protected $guarded = ['id'];
 
     public function board(): BelongsTo
     {
