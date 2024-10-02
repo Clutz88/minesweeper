@@ -5,7 +5,6 @@ namespace App\Actions;
 use App\Models\Board;
 use App\Models\Cell;
 use App\Models\Row;
-use Illuminate\Support\Collection;
 
 class CreateBoardAction
 {
@@ -57,7 +56,7 @@ class CreateBoardAction
             $generated_board->push($row);
         }
 
-//        return $board;
+        //        return $board;
         $board = Board::create();
         $generated_board->each(function ($row, $index) use ($board) {
             $saved_row = Row::make(['index' => $index]);
@@ -66,13 +65,13 @@ class CreateBoardAction
                 $saved_row->cells()->save(Cell::make($cell));
             });
         });
-//        for($i = 0; $i < $height; $i++) {
-//            $row = $board->rows()->create([
-//                'index' => $i
-//            ]);
-//            $seed->take($width)
-//                ->each(fn ($cell) => $row->cells()->create($cell));
-//        }
+        //        for($i = 0; $i < $height; $i++) {
+        //            $row = $board->rows()->create([
+        //                'index' => $i
+        //            ]);
+        //            $seed->take($width)
+        //                ->each(fn ($cell) => $row->cells()->create($cell));
+        //        }
 
         return $board;
     }

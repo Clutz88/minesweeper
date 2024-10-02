@@ -12,7 +12,7 @@ class Cell extends Model
 
     protected $fillable = [
         'is_revealed',
-        'is_flag'
+        'is_flag',
     ];
 
     public function row(): BelongsTo

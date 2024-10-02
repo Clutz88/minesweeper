@@ -33,7 +33,8 @@ class BoardController extends Controller
 
     public function edit($id) {}
 
-    public function update(Request $request, Board $board) {
+    public function update(Request $request, Board $board)
+    {
         app(UpdateBoardAction::class)->execute($board, $request->input('updates'));
     }
 
