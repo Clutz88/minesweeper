@@ -19,6 +19,12 @@ jobs:
             - name: Run composer install
               run: composer install -n --prefer-dist
 
+            - name: Setup Node
+              uses: actions/setup-node@v3
+
+            - name: Install dependencies
+              uses: bahmutov/npm-install@v1
+
             - name: Prepare Laravel Application
               run: |
                   cp .env.ci .env
