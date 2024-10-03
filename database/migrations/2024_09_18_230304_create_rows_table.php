@@ -11,7 +11,7 @@ return new class extends Migration
     {
         Schema::create('rows', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Board::class);
+            $table->foreignIdFor(Board::class)->constrained()->cascadeOnDelete();
             $table->integer('index');
             $table->timestamps();
         });

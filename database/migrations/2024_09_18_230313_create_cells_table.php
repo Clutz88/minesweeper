@@ -11,7 +11,7 @@ return new class extends Migration
     {
         Schema::create('cells', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Row::class);
+            $table->foreignIdFor(Row::class)->constrained()->cascadeOnDelete();
             $table->integer('index');
             $table->integer('x');
             $table->integer('y');

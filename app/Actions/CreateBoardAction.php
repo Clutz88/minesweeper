@@ -57,7 +57,6 @@ class CreateBoardAction
             $generated_board->push($row);
         }
 
-        //        return $board;
         $board = Board::create(['state' => BoardState::Running]);
         $generated_board->each(function ($row, $index) use ($board) {
             $saved_row = Row::make(['index' => $index]);
@@ -66,13 +65,6 @@ class CreateBoardAction
                 $saved_row->cells()->save(Cell::make($cell));
             });
         });
-        //        for($i = 0; $i < $height; $i++) {
-        //            $row = $board->rows()->create([
-        //                'index' => $i
-        //            ]);
-        //            $seed->take($width)
-        //                ->each(fn ($cell) => $row->cells()->create($cell));
-        //        }
 
         return $board;
     }
