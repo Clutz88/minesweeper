@@ -11,6 +11,9 @@
 |
 */
 
+use App\Models\Board;
+use App\Models\Row;
+
 pest()->extend(Tests\TestCase::class)
     ->use(Illuminate\Foundation\Testing\RefreshDatabase::class)
     ->in('Feature');
@@ -26,10 +29,6 @@ pest()->extend(Tests\TestCase::class)
 |
 */
 
-expect()->extend('toBeOne', function () {
-    return $this->toBe(1);
-});
-
 /*
 |--------------------------------------------------------------------------
 | Functions
@@ -41,7 +40,11 @@ expect()->extend('toBeOne', function () {
 |
 */
 
-function something()
+function provideTestBoard(): Board
 {
-    // ..
+    $board = Board::factory()
+        ->create();
+    Row::factory(3)->hasCells(5)->create(['board_id' => $board->id]);
+
+    return $board;
 }
