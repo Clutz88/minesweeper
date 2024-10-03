@@ -20,6 +20,7 @@ class RemoveOldGamesCommand extends Command
             info('Deleting boards that are over');
         }
         Board::where('state', BoardState::Over)
+            ->orWhere('created_at', '<=', now()->subWeek())
             ->delete();
     }
 }
