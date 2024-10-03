@@ -9,10 +9,9 @@ class CellFactory extends Factory
 {
     protected $model = Cell::class;
 
-    public function definition()
+    public function definition(): array
     {
         return [
-            'index' => fake()->unique()->randomNumber(),
             'x' => fake()->randomNumber(),
             'y' => fake()->randomNumber(),
             'value' => fake()->numberBetween(0, 8),
