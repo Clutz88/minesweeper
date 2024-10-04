@@ -20,7 +20,6 @@ const queueUpdate = (cell) => {
         id: cell.id,
         is_flag: cell.is_flag,
         is_revealed: cell.is_revealed,
-        is_mine: cell.is_mine,
     });
 };
 
