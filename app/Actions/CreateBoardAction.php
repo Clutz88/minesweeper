@@ -18,7 +18,6 @@ class CreateBoardAction
             ->shuffle()
             ->map(function ($cell, $index) use ($width) {
                 return [
-                    'index' => $index,
                     'x' => $index % $width,
                     'y' => (int) floor($index / $width),
                     'value' => $cell,
