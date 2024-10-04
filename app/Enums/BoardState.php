@@ -6,4 +6,5 @@ enum BoardState: string
 {
     case Running = 'running';
     case Over = 'over';
+    case Winner = 'winner';
 }

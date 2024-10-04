@@ -8,13 +8,11 @@ use Illuminate\Support\Collection;
 
 class UpdateBoardAction
 {
-    public function execute(Board $board, Collection $board_update): void
+    public function execute(Board $board, Collection $board_update): Board
     {
-        $cells = $board->cells()->whereIn('cells.id', $board_update->pluck('id'))->get();
         $board_update
             ->filter(fn ($cell) => $cell !== null)
-            ->each(fn ($cell) => $cells->where('id', $cell['id'])
-                ->first()
+            ->each(fn ($cell) => $board->cells()->where('cells.id', $cell['id'])
                 ->update([
                     'is_revealed' => $cell['is_revealed'],
                     'is_flag' => $cell['is_flag'],
@@ -28,5 +26,19 @@ class UpdateBoardAction
                     $board->save();
                 }
             });
+
+        if ($board->state === BoardState::Over) {
+            return $board;
+        }
+
+        if ($board->cells->where('is_mine', false)
+            ->where('is_revealed', false)
+            ->isEmpty()
+        ) {
+            $board->state = BoardState::Winner;
+            $board->save();
+        }
+
+        return $board;
     }
 }
