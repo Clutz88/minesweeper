@@ -24,7 +24,11 @@ const queueUpdate = (cell) => {
 };
 
 const sendUpdates = () => {
-    axios.put(route('board.update', board.data), { updates: updates });
+    axios.put(route('board.update', board.data), { updates: updates }).then((response) => {
+        if (response.data.state !== board.state) {
+            board.data.state = response.data.state;
+        }
+    });
     updates = [];
 };
 
@@ -44,9 +48,7 @@ const reveal = (cell, initial = false) => {
     if (initial) {
         sendUpdates();
     }
-    if (cell.is_mine) {
-        board.data.state = 'over';
-    }
+
     return [];
 };
 

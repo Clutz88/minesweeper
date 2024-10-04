@@ -17,27 +17,21 @@ class CreateBoardAction
         ])
             ->shuffle()
             ->map(function ($cell, $index) use ($width) {
-                return [
+                return Cell::make([
                     'x' => $index % $width,
                     'y' => (int) floor($index / $width),
                     'value' => $cell,
                     'is_mine' => $cell === 'x',
                     'is_flag' => false,
                     'is_revealed' => false,
-                ];
+                ]);
             });
-        $seed = $seed->map(function ($cell, $index) use ($width, $seed) {
-            if (! $cell['is_mine']) {
+        $seed = $seed->map(function (Cell $cell, $index) use ($width, $seed) {
+            if (! $cell->is_mine) {
                 foreach ([$width, 0, -$width] as $offset) {
                     for ($i = -1; $i <= 1; $i++) {
-                        if ($i === -1 && $index % $width === 0) {
-                            continue;
-                        }
-                        if ($i === 1 && $index % $width === $width - 1) {
-                            continue;
-                        }
-                        if ($seed[$index + $offset + $i]['is_mine'] ?? null) {
-                            $cell['value']++;
+                        if ($seed->has($index + $offset + $i) && $seed[$index + $offset + $i]->is_mine) {
+                            $cell->value++;
                         }
                     }
                 }
@@ -46,24 +40,12 @@ class CreateBoardAction
             return $cell;
         });
 
-        $generated_board = collect();
-        for ($i = 0; $i < $height; $i++) {
-            $row = collect();
-            $chunk = $seed->shift($width);
-            $chunk->each(function ($cell) use ($row) {
-                $row->push($cell);
-            });
-            $generated_board->push($row);
-        }
-
         $board = Board::create(['state' => BoardState::Running]);
-        $generated_board->each(function ($row, $index) use ($board) {
-            $saved_row = Row::make(['index' => $index]);
-            $board->rows()->save($saved_row);
-            $row->each(function ($cell) use ($saved_row) {
-                $saved_row->cells()->save(Cell::make($cell));
-            });
-        });
+        for ($i = 0; $i < $height; $i++) {
+            $row = Row::create(['board_id' => $board->id, 'index' => $i]);
+            $chunk = $seed->shift($width);
+            $chunk->each(fn (Cell $cell) => $row->cells()->save($cell));
+        }
 
         return $board;
     }
