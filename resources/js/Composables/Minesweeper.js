@@ -1,4 +1,4 @@
-import { ref } from 'vue';
+import { ref, watchEffect } from 'vue';
 
 let board;
 let updates = [];
@@ -6,8 +6,23 @@ const mine_count = ref(0);
 
 const init = (new_board) => {
     board = new_board;
-    // @todo Use state to calculate current mine_count!
-    mine_count.value = board.data.mine_count;
+
+    watchEffect(() => {
+        mine_count.value = board.data.mine_count - countFlags();
+    });
+};
+
+const countFlags = () => {
+    let flags = 0;
+    for (let x = 0; x < board.data.rows.length; x++) {
+        for (let y = 0; y < board.data.rows[x].cells.length; y++) {
+            let cell = board.data.rows[x].cells[y];
+            if (cell.is_flag) {
+                flags++;
+            }
+        }
+    }
+    return flags;
 };
 
 const revealAround = (cell) => {
@@ -85,11 +100,7 @@ const flag = (cell) => {
     }
 
     cell.is_flag = !cell.is_flag;
-    if (cell.is_flag) {
-        mine_count.value--;
-    } else {
-        mine_count.value++;
-    }
+
     queueUpdate(cell);
     sendUpdates();
 };
