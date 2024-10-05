@@ -1,6 +1,7 @@
 <script setup>
 import Modal from '@/Components/Modal.vue';
 import { Link } from '@inertiajs/vue3';
+import ConfettiExplosion from 'vue-confetti-explosion';
 
 defineProps(['state']);
 </script>
@@ -19,6 +20,11 @@ defineProps(['state']);
             </Link>
         </div>
     </Modal>
+    <div class="absolute left-1/2 top-1/4 z-[60] -translate-x-1/2 -translate-y-1/2 transform">
+        <div class="relative align-middle">
+            <ConfettiExplosion v-if="state === 'winner'" :stageHeight="2000" :particleSize="8" :force="0.3" />
+        </div>
+    </div>
 </template>
 
 <style scoped></style>
