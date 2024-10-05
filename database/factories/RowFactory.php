@@ -12,7 +12,6 @@ class RowFactory extends Factory
     public function definition()
     {
         return [
-            'index' => fake()->unique()->randomNumber(),
         ];
     }
 }
