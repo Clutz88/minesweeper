@@ -1,8 +1,13 @@
+import { ref } from 'vue';
+
 let board;
 let updates = [];
+const mine_count = ref(0);
 
 const init = (new_board) => {
     board = new_board;
+    // @todo Use state to calculate current mine_count!
+    mine_count.value = board.data.mine_count;
 };
 
 const revealAround = (cell) => {
@@ -80,8 +85,13 @@ const flag = (cell) => {
     }
 
     cell.is_flag = !cell.is_flag;
+    if (cell.is_flag) {
+        mine_count.value--;
+    } else {
+        mine_count.value++;
+    }
     queueUpdate(cell);
     sendUpdates();
 };
 
-export { init, reveal, flag };
+export { init, reveal, flag, mine_count };

@@ -17,18 +17,14 @@ class UpdateBoardAction
                     'is_revealed' => $cell['is_revealed'],
                     'is_flag' => $cell['is_flag'],
                 ])
-            )
-            ->where('is_mine', '=', true)
-            ->where('is_revealed', '=', true)
-            ->tap(function ($updates) use ($board) {
-                if ($updates->isNotEmpty()) {
-                    $board->state = BoardState::Over;
-                    $board->save();
-                }
-            });
+            );
 
-        if ($board->state === BoardState::Over) {
-            return $board;
+        if ($board->cells->where('is_mine', true)
+            ->where('is_revealed', true)
+            ->isNotEmpty()
+        ) {
+            $board->state = BoardState::Over;
+            $board->save();
         }
 
         if ($board->cells->where('is_mine', false)

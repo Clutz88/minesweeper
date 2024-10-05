@@ -14,6 +14,9 @@ class BoardResource extends JsonResource
         return [
             'id' => $this->id,
             'state' => $this->state,
+            'mine_count' => $this->mine_count,
+            'width' => $this->width,
+            'height' => $this->height,
             'rows' => RowResource::collection($this->rows),
         ];
     }
