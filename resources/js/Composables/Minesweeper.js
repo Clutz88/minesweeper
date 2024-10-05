@@ -28,7 +28,7 @@ const countFlags = () => {
 const revealAround = (cell) => {
     for (let x = -1; x <= 1; x++) {
         for (let y = -1; y <= 1; y++) {
-            if (cell.y + y > 29) continue;
+            if (cell.y + y > board.data.height - 1) continue;
             if (cell.y + y < 0) continue;
             reveal(board.data.rows[cell.y + y].cells[cell.x + x]);
         }
@@ -76,7 +76,7 @@ const countFlagsAround = (cell) => {
     let count = 0;
     for (let x = -1; x <= 1; x++) {
         for (let y = -1; y <= 1; y++) {
-            if (cell.y + y > 29) continue;
+            if (cell.y + y > board.data.height - 1) continue;
             if (cell.y + y < 0) continue;
             let test_cell = board.data.rows[cell.y + y].cells[cell.x + x];
             if (typeof test_cell !== 'undefined') {
