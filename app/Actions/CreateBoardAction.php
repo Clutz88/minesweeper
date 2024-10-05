@@ -17,21 +17,27 @@ class CreateBoardAction
         ])
             ->shuffle()
             ->map(function ($cell, $index) use ($width) {
-                return Cell::make([
+                return [
                     'x' => $index % $width,
                     'y' => (int) floor($index / $width),
                     'value' => $cell,
                     'is_mine' => $cell === 'x',
                     'is_flag' => false,
                     'is_revealed' => false,
-                ]);
+                ];
             });
-        $seed = $seed->map(function (Cell $cell, $index) use ($width, $seed) {
-            if (! $cell->is_mine) {
+        $seed = $seed->map(function (array $cell, $index) use ($width, $seed) {
+            if (! $cell['is_mine']) {
                 foreach ([$width, 0, -$width] as $offset) {
                     for ($i = -1; $i <= 1; $i++) {
-                        if ($seed->has($index + $offset + $i) && $seed[$index + $offset + $i]->is_mine) {
-                            $cell->value++;
+                        if ($i === -1 && $index % $width === 0) {
+                            continue;
+                        }
+                        if ($i === 1 && $index % $width === $width - 1) {
+                            continue;
+                        }
+                        if ($seed->has($index + $offset + $i) && $seed[$index + $offset + $i]['is_mine']) {
+                            $cell['value']++;
                         }
                     }
                 }
@@ -40,12 +46,23 @@ class CreateBoardAction
             return $cell;
         });
 
-        $board = Board::create(['state' => BoardState::Running]);
-        for ($i = 0; $i < $height; $i++) {
-            $row = Row::create(['board_id' => $board->id, 'index' => $i]);
-            $chunk = $seed->shift($width);
-            $chunk->each(fn (Cell $cell) => $row->cells()->save($cell));
-        }
+        $board = Board::create([
+            'state' => BoardState::Running,
+            'mine_count' => $mines,
+            'width' => $width,
+            'height' => $height,
+        ]);
+        Row::insert(array_fill(0, $height, ['board_id' => $board->id]));
+        $rows = Row::where('board_id', $board->id)->get();
+        $cells = $seed
+            ->chunk($width)
+            ->flatMap(function ($chunk, $index) use ($rows) {
+                return $chunk->map(function ($cell) use ($rows, $index) {
+                    return array_merge($cell, ['row_id' => $rows[$index]->id]);
+                });
+            })
+            ->toArray();
+        Cell::insert($cells);
 
         return $board;
     }
