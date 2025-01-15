@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "aws/aws-crt-php",
-            "version": "v1.2.6",
+            "version": "v1.2.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/awslabs/aws-crt-php.git",
-                "reference": "a63485b65b6b3367039306496d49737cf1995408"
+                "reference": "d71d9906c7bb63a28295447ba12e74723bd3730e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/awslabs/aws-crt-php/zipball/a63485b65b6b3367039306496d49737cf1995408",
-                "reference": "a63485b65b6b3367039306496d49737cf1995408",
+                "url": "https://api.github.com/repos/awslabs/aws-crt-php/zipball/d71d9906c7bb63a28295447ba12e74723bd3730e",
+                "reference": "d71d9906c7bb63a28295447ba12e74723bd3730e",
                 "shasum": ""
             },
             "require": {
@@ -56,22 +56,22 @@
             ],
             "support": {
                 "issues": "https://github.com/awslabs/aws-crt-php/issues",
-                "source": "https://github.com/awslabs/aws-crt-php/tree/v1.2.6"
+                "source": "https://github.com/awslabs/aws-crt-php/tree/v1.2.7"
             },
-            "time": "2024-06-13T17:21:28+00:00"
+            "time": "2024-10-18T22:15:13+00:00"
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.322.9",
+            "version": "3.336.14",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "0bd7513a7dd9b5330cb92575da99d9057f79b39c"
+                "reference": "dc9ac0ab313bbfc4e41635ce6d6083f28d202bf0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/0bd7513a7dd9b5330cb92575da99d9057f79b39c",
-                "reference": "0bd7513a7dd9b5330cb92575da99d9057f79b39c",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/dc9ac0ab313bbfc4e41635ce6d6083f28d202bf0",
+                "reference": "dc9ac0ab313bbfc4e41635ce6d6083f28d202bf0",
                 "shasum": ""
             },
             "require": {
@@ -100,8 +100,8 @@
                 "nette/neon": "^2.3",
                 "paragonie/random_compat": ">= 2",
                 "phpunit/phpunit": "^5.6.3 || ^8.5 || ^9.5",
-                "psr/cache": "^1.0",
-                "psr/simple-cache": "^1.0",
+                "psr/cache": "^1.0 || ^2.0 || ^3.0",
+                "psr/simple-cache": "^1.0 || ^2.0 || ^3.0",
                 "sebastian/comparator": "^1.2.3 || ^4.0",
                 "yoast/phpunit-polyfills": "^1.0"
             },
@@ -154,9 +154,9 @@
             "support": {
                 "forum": "https://forums.aws.amazon.com/forum.jspa?forumID=80",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.322.9"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.336.14"
             },
-            "time": "2024-10-01T18:23:10+00:00"
+            "time": "2025-01-13T19:04:40+00:00"
         },
         {
             "name": "brick/math",
@@ -1922,16 +1922,16 @@
         },
         {
             "name": "laravel/vapor-core",
-            "version": "v2.37.1",
+            "version": "v2.37.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/vapor-core.git",
-                "reference": "9fac8cd0f9b6979887253dd676e04ecb868be615"
+                "reference": "43cc2104a844e0ca2821e344ba1c7881100b88c1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/vapor-core/zipball/9fac8cd0f9b6979887253dd676e04ecb868be615",
-                "reference": "9fac8cd0f9b6979887253dd676e04ecb868be615",
+                "url": "https://api.github.com/repos/laravel/vapor-core/zipball/43cc2104a844e0ca2821e344ba1c7881100b88c1",
+                "reference": "43cc2104a844e0ca2821e344ba1c7881100b88c1",
                 "shasum": ""
             },
             "require": {
@@ -1951,6 +1951,7 @@
                 "symfony/psr-http-message-bridge": "^1.0|^2.0|^6.4|^7.0"
             },
             "require-dev": {
+                "laravel/octane": "*",
                 "mockery/mockery": "^1.2",
                 "orchestra/testbench": "^4.0|^5.0|^6.0|^7.0|^8.0|^9.0",
                 "phpstan/phpstan": "^1.10",
@@ -1958,16 +1959,16 @@
             },
             "type": "library",
             "extra": {
-                "branch-alias": {
-                    "dev-master": "2.0-dev"
-                },
                 "laravel": {
-                    "providers": [
-                        "Laravel\\Vapor\\VaporServiceProvider"
-                    ],
                     "aliases": {
                         "Vapor": "Laravel\\Vapor\\Vapor"
-                    }
+                    },
+                    "providers": [
+                        "Laravel\\Vapor\\VaporServiceProvider"
+                    ]
+                },
+                "branch-alias": {
+                    "dev-master": "2.0-dev"
                 }
             },
             "autoload": {
@@ -1995,9 +1996,9 @@
                 "vapor"
             ],
             "support": {
-                "source": "https://github.com/laravel/vapor-core/tree/v2.37.1"
+                "source": "https://github.com/laravel/vapor-core/tree/v2.37.8"
             },
-            "time": "2024-03-26T16:55:06+00:00"
+            "time": "2024-12-06T19:11:27+00:00"
         },
         {
             "name": "league/commonmark",
@@ -5937,16 +5938,16 @@
         },
         {
             "name": "symfony/psr-http-message-bridge",
-            "version": "v7.1.4",
+            "version": "v7.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/psr-http-message-bridge.git",
-                "reference": "405a7bcd872f1563966f64be19f1362d94ce71ab"
+                "reference": "03f2f72319e7acaf2a9f6fcbe30ef17eec51594f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/psr-http-message-bridge/zipball/405a7bcd872f1563966f64be19f1362d94ce71ab",
-                "reference": "405a7bcd872f1563966f64be19f1362d94ce71ab",
+                "url": "https://api.github.com/repos/symfony/psr-http-message-bridge/zipball/03f2f72319e7acaf2a9f6fcbe30ef17eec51594f",
+                "reference": "03f2f72319e7acaf2a9f6fcbe30ef17eec51594f",
                 "shasum": ""
             },
             "require": {
@@ -6000,7 +6001,7 @@
                 "psr-7"
             ],
             "support": {
-                "source": "https://github.com/symfony/psr-http-message-bridge/tree/v7.1.4"
+                "source": "https://github.com/symfony/psr-http-message-bridge/tree/v7.2.0"
             },
             "funding": [
                 {
@@ -6016,7 +6017,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-08-15T22:48:53+00:00"
+            "time": "2024-09-26T08:57:56+00:00"
         },
         {
             "name": "symfony/routing",
